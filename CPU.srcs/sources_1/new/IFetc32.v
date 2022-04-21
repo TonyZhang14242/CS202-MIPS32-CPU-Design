@@ -48,20 +48,24 @@ reg[31:0] link_addr;
   assign PC_plus4[31:2]=PC[31:2]+1;
   assign PC_plus4[1:0]=PC[1:0];
   assign branch_base_addr=PC_plus4[31:0];
+  
   always @ (*)begin
    if(((Branch==1)&&(Zero==1)||(nBranch==1)&&(Zero==0)))//beq bne
-          Next_PC = Addr_result;
-   else if(Jr==1)     Next_PC = Read_data_1[31:0];
-   else   Next_PC = PC_plus4[31:2];
+          Next_PC = Addr_result<<2;
+   else if(Jr==1)     Next_PC = Read_data_1[31:0]<<2;
+   else if((Jmp == 1) || (Jal == 1))  Next_PC={PC[31:28],Instruction[27:0]<<2};
+   else   Next_PC = PC_plus4[31:0];
    end
+   
+   
    always @(negedge clock)begin
     if(reset == 1) begin
-     PC = 32'h0000_0000;
+     PC <= 32'h0000_0000;
     end
    else  if((Jmp == 1) || (Jal == 1)) begin
-		link_addr=Next_PC;
-		PC={PC[31:28],Instruction[27:0]<<2};
+		link_addr <=Next_PC>>2;
+		PC<=Next_PC;
    end
-   else PC[31:0]=Next_PC[31:0]<<2;
+   else PC[31:0]<=Next_PC[31:0];
    end
 endmodule
