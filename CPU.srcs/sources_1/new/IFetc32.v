@@ -63,7 +63,7 @@ reg[31:0] link_addr;
      PC <= 32'h0000_0000;
     end
    else  if((Jmp == 1) || (Jal == 1)) begin
-		link_addr <=Next_PC>>2;
+		link_addr <=PC_plus4[31:0]>>2;
 		PC<=Next_PC;
    end
    else PC[31:0]<=Next_PC[31:0];
