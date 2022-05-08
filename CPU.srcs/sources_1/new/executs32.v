@@ -33,7 +33,7 @@ module executs32(Read_data_1,Read_data_2,Sign_extend,Function_opcode,Exe_opcode,
     input  		 Sftmd;            // 来自控制单元的，表明是移位指令
     input        ALUSrc;            // 来自控制单元，表明第二个操作数是立即数（beq，bne除外）
     input        I_format;          // 来自控制单元，表明是除beq, bne, LW, SW之外的I-类型指令
-    input        Jr;               // 来自控制单元，表明是JR指令
+    input        Jr;               // 来自控制单元，表明是JR指令 //bullshit ?? what the fxxking use??
     output       Zero;              // 为1表明计算值为0 
     output[31:0] ALU_Result;        // 计算的数据结果
     output[31:0] Addr_Result;		// 计算的地址结果        
@@ -42,7 +42,7 @@ module executs32(Read_data_1,Read_data_2,Sign_extend,Function_opcode,Exe_opcode,
    
     reg[31:0] ALU_Result;
     wire[31:0] Ainput,Binput; // two operands for calculation
-   // wire signed[31:0] Ainput_signed,Binput_signed;
+  
     
     wire[5:0] Exe_code; // use to generate ALU_ctrl. (I_format==0) ? Function_opcode : { 3'b000 , Opcode[2:0] };
     wire[2:0] ALU_ctl; // the control signals which affact operation in ALU directely
@@ -53,8 +53,7 @@ module executs32(Read_data_1,Read_data_2,Sign_extend,Function_opcode,Exe_opcode,
     
     assign Ainput = Read_data_1;
     assign Binput = (ALUSrc == 0) ? Read_data_2 : Sign_extend[31:0];
-   // assign Ainput_signed = Ainput;
-   // assign Binput_signed = Binput;
+   
 	
     assign Exe_code =(I_format==0) ?Function_opcode :{ 3'b000 , Exe_opcode[2:0] };
     

@@ -34,12 +34,7 @@ input Zero,// while Zero is 1, it means the ALUresult is zero
 input clock, reset, // Clock and reset
 output[31:0] link_addr // (pc+4) to Decoder which is used by jal instruction
 );
-// from ALU
 
-
-// from Decoder
-
-// from Controller
 
 
 reg[31:0] PC, Next_PC;

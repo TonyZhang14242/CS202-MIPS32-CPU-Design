@@ -56,7 +56,7 @@ module decode32(
     
     assign sign=Instruction[15];
     assign Sign_extend[31:0]=(opcode==6'b001100||opcode==6'b001101||opcode==6'b001110||opcode==6'b001011)?{16'b0,Instruction[15:0]}:{{16{sign}},Instruction[15:0]};
-    //except andi and ori  otherwise extend sign
+    //except andi and ori and xori and sltiu  otherwise extend sign
     
     assign read_data_1=register[rreg_addr1];
     assign read_data_2=register[rreg_addr2];
