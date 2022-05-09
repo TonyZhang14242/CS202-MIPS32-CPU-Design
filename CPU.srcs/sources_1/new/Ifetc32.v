@@ -62,7 +62,7 @@ wire[31:0] Jpadr;
    end
    
    always @(negedge clock) begin
-		if((Jmp == 1) || (Jal == 1))
+		if((Jal == 1))
 			link_addr <=PC_plus4[31:0];
 		else link_addr<=link_addr;
    end
