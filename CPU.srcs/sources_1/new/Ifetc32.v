@@ -21,8 +21,8 @@
 
 
 module Ifetc32(
-output reg[31:0] Instruction, // the instruction fetched from this module
-output reg[31:0] branch_base_addr, // (pc+4) to ALU which is used by branch type instruction
+output [31:0] Instruction, // the instruction fetched from this module
+output [31:0] branch_base_addr, // (pc+4) to ALU which is used by branch type instruction
 input[31:0] Addr_result, // the calculated address from ALU
 input[31:0] Read_data_1, // the address of instruction used by jr instruction
 input Branch, // while Branch is 1,it means current instruction is beq
@@ -38,25 +38,24 @@ output[31:0] link_addr // (pc+4) to Decoder which is used by jal instruction
 
 
 reg[31:0] PC, Next_PC;
-reg [31:0] PC_plus4;
 reg[31:0] link_addr;
-wire[31:0] Jpadr;
+wire [31:0] PC_plus4;
+
  prgrom instmem(
        .clka(clock),         // input wire clka
        .addra(PC[15:2]),     // input wire [13 : 0] addra
-       .douta(Jpadr)         // output wire [31 : 0] douta
+       .douta(Instruction)         // output wire [31 : 0] douta
   );
  
+  assign PC_plus4=PC+4;
+  assign branch_base_addr=PC_plus4;
   
   always @ (*)begin
-  PC_plus4<=PC+32'd4;
-  branch_base_addr<=PC_plus4;
-  Instruction<=Jpadr;
    if(((Branch==1)&&(Zero==1)||(nBranch==1)&&(Zero==0)))//beq bne
           Next_PC = Addr_result;
    else if(Jr==1)     Next_PC = Read_data_1[31:0];
    else if((Jmp == 1) || (Jal == 1)) begin 
-   Next_PC={4'b0000,Instruction[25:0],2'b00};
+		Next_PC={4'b0000,Instruction[25:0],2'b00};
    end
    else   Next_PC = PC_plus4[31:0];
    end
