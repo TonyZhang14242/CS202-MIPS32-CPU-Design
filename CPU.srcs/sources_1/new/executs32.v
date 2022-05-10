@@ -23,21 +23,21 @@
 module executs32(Read_data_1,Read_data_2,Sign_extend,Function_opcode,Exe_opcode,ALUOp,
                  Shamt,ALUSrc,I_format,Zero,Jr,Sftmd,ALU_Result,Addr_Result,PC_plus_4
                  );
-    input[31:0]  Read_data_1;		// ´ÓÒëÂëµ¥ÔªµÄRead_data_1ÖĞÀ´
-    input[31:0]  Read_data_2;		// ´ÓÒëÂëµ¥ÔªµÄRead_data_2ÖĞÀ´
-    input[31:0]  Sign_extend;		// ´ÓÒëÂëµ¥ÔªÀ´µÄÀ©Õ¹ºóµÄÁ¢¼´Êı
-    input[5:0]   Function_opcode;  	// È¡Ö¸µ¥ÔªÀ´µÄr-ÀàĞÍÖ¸Áî¹¦ÄÜÂë,r-form instructions[5:0]
-    input[5:0]   Exe_opcode;  		// È¡Ö¸µ¥ÔªÀ´µÄ²Ù×÷Âë
-    input[1:0]   ALUOp;             // À´×Ô¿ØÖÆµ¥ÔªµÄÔËËãÖ¸Áî¿ØÖÆ±àÂë
-    input[4:0]   Shamt;             // À´×ÔÈ¡Ö¸µ¥ÔªµÄinstruction[10:6]£¬Ö¸¶¨ÒÆÎ»´ÎÊı
-    input  		 Sftmd;            // À´×Ô¿ØÖÆµ¥ÔªµÄ£¬±íÃ÷ÊÇÒÆÎ»Ö¸Áî
-    input        ALUSrc;            // À´×Ô¿ØÖÆµ¥Ôª£¬±íÃ÷µÚ¶ş¸ö²Ù×÷ÊıÊÇÁ¢¼´Êı£¨beq£¬bne³ıÍâ£©
-    input        I_format;          // À´×Ô¿ØÖÆµ¥Ôª£¬±íÃ÷ÊÇ³ıbeq, bne, LW, SWÖ®ÍâµÄI-ÀàĞÍÖ¸Áî
-    input        Jr;               // À´×Ô¿ØÖÆµ¥Ôª£¬±íÃ÷ÊÇJRÖ¸Áî //bullshit ?? what the fxxking use??
-    output       Zero;              // Îª1±íÃ÷¼ÆËãÖµÎª0 
-    output[31:0] ALU_Result;        // ¼ÆËãµÄÊı¾İ½á¹û
-    output[31:0] Addr_Result;		// ¼ÆËãµÄµØÖ·½á¹û        
-    input[31:0]  PC_plus_4;         // À´×ÔÈ¡Ö¸µ¥ÔªµÄPC+4
+    input[31:0]  Read_data_1;		// ä»è¯‘ç å•å…ƒçš„Read_data_1ä¸­æ¥
+    input[31:0]  Read_data_2;		// ä»è¯‘ç å•å…ƒçš„Read_data_2ä¸­æ¥
+    input[31:0]  Sign_extend;		// ä»è¯‘ç å•å…ƒæ¥çš„æ‰©å±•åçš„ç«‹å³æ•°
+    input[5:0]   Function_opcode;  	// å–æŒ‡å•å…ƒæ¥çš„r-ç±»å‹æŒ‡ä»¤åŠŸèƒ½ç ,r-form instructions[5:0]
+    input[5:0]   Exe_opcode;  		// å–æŒ‡å•å…ƒæ¥çš„æ“ä½œç 
+    input[1:0]   ALUOp;             // æ¥è‡ªæ§åˆ¶å•å…ƒçš„è¿ç®—æŒ‡ä»¤æ§åˆ¶ç¼–ç 
+    input[4:0]   Shamt;             // æ¥è‡ªå–æŒ‡å•å…ƒçš„instruction[10:6]ï¼ŒæŒ‡å®šç§»ä½æ¬¡æ•°
+    input  		 Sftmd;            // æ¥è‡ªæ§åˆ¶å•å…ƒçš„ï¼Œè¡¨æ˜æ˜¯ç§»ä½æŒ‡ä»¤
+    input        ALUSrc;            // æ¥è‡ªæ§åˆ¶å•å…ƒï¼Œè¡¨æ˜ç¬¬äºŒä¸ªæ“ä½œæ•°æ˜¯ç«‹å³æ•°ï¼ˆbeqï¼Œbneé™¤å¤–ï¼‰
+    input        I_format;          // æ¥è‡ªæ§åˆ¶å•å…ƒï¼Œè¡¨æ˜æ˜¯é™¤beq, bne, LW, SWä¹‹å¤–çš„I-ç±»å‹æŒ‡ä»¤
+    input        Jr;               // æ¥è‡ªæ§åˆ¶å•å…ƒï¼Œè¡¨æ˜æ˜¯JRæŒ‡ä»¤ //bullshit ?? what the fxxking use??
+    output       Zero;              // ä¸º1è¡¨æ˜è®¡ç®—å€¼ä¸º0 
+    output[31:0] ALU_Result;        // è®¡ç®—çš„æ•°æ®ç»“æœ
+    output[31:0] Addr_Result;		// è®¡ç®—çš„åœ°å€ç»“æœ        
+    input[31:0]  PC_plus_4;         // æ¥è‡ªå–æŒ‡å•å…ƒçš„PC+4
   
    
     reg[31:0] ALU_Result;
@@ -67,20 +67,20 @@ module executs32(Read_data_1,Read_data_2,Sign_extend,Function_opcode,Exe_opcode,
     assign Addr_Result=Branch_Addr[31:0];
     assign Zero=(ALU_output_mux==32'h00000000)?1'b1:1'b0;
     
-    //Determine the output "ALU_Result "
+    //Determine the output "ALU_Result"
     always @(*) begin
-    //set type operation (slt, slti, sltu, sltiu)
-    if( ((ALU_ctl==3'b111) && (Exe_code[3]==1)) || (ALU_ctl[2:1]==2'b11&& I_format==1'b1) )
-	ALU_Result = ($signed(Ainput)-$signed(Binput)<0)?1:0;
-    //lui operation
-    else if((ALU_ctl==3'b101) && (I_format==1))
-    ALU_Result[31:0]= {Binput[15:0],16'b0};/*set higher bits to Binput*/
-    //shift operation
-    else if(Sftmd==1)
-    ALU_Result = Shift_Result ;
-    //other types of operation in ALU (arithmatic or logic calculation)
-    else
-    ALU_Result = ALU_output_mux[31:0];
+    	//set type operation (slt, slti, sltu, sltiu)
+    	if( ((ALU_ctl==3'b111) && (Exe_code[3]==1)) || (ALU_ctl[2:1]==2'b11&& I_format==1'b1) )
+			ALU_Result = ($signed(Ainput)-$signed(Binput)<0)?1:0;
+    	//lui operation
+    	else if((ALU_ctl==3'b101) && (I_format==1))
+    		ALU_Result[31:0]= {Binput[15:0],16'b0};/*set higher bits to Binput*/
+    	//shift operation
+    	else if(Sftmd==1)
+    		ALU_Result = Shift_Result ;
+    	//other types of operation in ALU (arithmatic or logic calculation)
+    	else
+    		ALU_Result = ALU_output_mux[31:0];
     end
     
     
@@ -110,9 +110,9 @@ module executs32(Read_data_1,Read_data_2,Sign_extend,Function_opcode,Exe_opcode,
             3'b011:Shift_Result = $signed(Binput)>>> Shamt; //Sra rd,rt,shamt 00011
             3'b111:Shift_Result = $signed(Binput)>>> Ainput; //Srav rd,rt,rs 00111
             default:Shift_Result = Binput;
-             endcase
+            endcase
         else
-        Shift_Result = Binput;
+        	Shift_Result = Binput;
     end
     
     
