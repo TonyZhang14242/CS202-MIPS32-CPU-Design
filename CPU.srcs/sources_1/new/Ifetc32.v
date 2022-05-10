@@ -51,25 +51,25 @@ wire [31:0] PC_plus4;
   assign branch_base_addr=PC_plus4;
   
   always @ (*)begin
-   if(((Branch==1)&&(Zero==1)||(nBranch==1)&&(Zero==0)))//beq bne
-          Next_PC = Addr_result;
-   else if(Jr==1)     Next_PC = Read_data_1[31:0];
-   else if((Jmp == 1) || (Jal == 1)) begin 
+   	if(((Branch==1)&&(Zero==1)||(nBranch==1)&&(Zero==0)))//beq bne
+          	Next_PC = Addr_result;
+   	else if(Jr==1)     Next_PC = Read_data_1[31:0];
+   	else if((Jmp == 1) || (Jal == 1)) begin 
 		Next_PC={4'b0000,Instruction[25:0],2'b00};
-   end
-   else   Next_PC = PC_plus4[31:0];
+   	end
+   	else   Next_PC = PC_plus4[31:0];
    end
    
    always @(negedge clock) begin
-		if((Jal == 1))
-			link_addr <=PC_plus4[31:0];
-		else link_addr<=link_addr;
+	if((Jal == 1))
+		link_addr <=PC_plus4[31:0];
+	else link_addr<=link_addr;
    end
    
    always @(negedge clock)begin
-    if(reset == 1) begin
-     PC <= 32'h0000_0000;
-    end
-   else PC[31:0]<=Next_PC[31:0];
+    	if(reset == 1) begin
+     		PC <= 32'h0000_0000;
+   	end
+   	else PC[31:0]<=Next_PC[31:0];
    end
 endmodule
