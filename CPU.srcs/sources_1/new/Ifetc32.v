@@ -24,13 +24,13 @@ module Ifetc32(
 	output [31:0] Instruction, // the instruction fetched from this module
 	output [31:0] branch_base_addr, // (pc+4) to ALU which is used by branch type instruction
 	input[31:0] Addr_result, // the calculated address from ALU
-	input[31:0] Read_data_1, // the address of instruction used by jr instruction
+	input[31:0] Read_data_1, // the address of instruction from Decoder used by jr instruction
 	input Branch, // while Branch is 1,it means current instruction is beq
 	input nBranch, // while nBranch is 1,it means current instruction is bnq
 	input Jmp, // while Jmp 1, it means current instruction is jump
 	input Jal, // while Jal is 1, it means current instruction is jal
 	input Jr,// while Jr is 1, it means current instruction is jr
-	input Zero,// while Zero is 1, it means the ALUresult is zero
+	input Zero,// from ALU, while Zero is 1, it means the ALUresult is zero
 	input clock, reset, // Clock and reset
 	output[31:0] link_addr // (pc+4) to Decoder which is used by jal instruction
 );
@@ -52,8 +52,8 @@ module Ifetc32(
   
 	always @ (*)begin
 		if(((Branch==1)&&(Zero==1)||(nBranch==1)&&(Zero==0)))//beq bne
-			Next_PC = Addr_result;
-		else if(Jr==1)	Next_PC = Read_data_1[31:0];
+			Next_PC = Addr_result;	//the calculated new value for PC
+		else if(Jr==1)	Next_PC = Read_data_1[31:0];	//the value of $31 register
 		else if((Jmp == 1) || (Jal == 1)) begin 
 			Next_PC={4'b0000,Instruction[25:0],2'b00};
 		end

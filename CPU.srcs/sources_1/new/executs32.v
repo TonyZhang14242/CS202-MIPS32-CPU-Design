@@ -23,21 +23,21 @@
 module executs32(Read_data_1,Read_data_2,Sign_extend,Function_opcode,Exe_opcode,ALUOp,
                  Shamt,ALUSrc,I_format,Zero,Jr,Sftmd,ALU_Result,Addr_Result,PC_plus_4
                  );
-    input[31:0]  Read_data_1;		// 从译码单元的Read_data_1中来
-    input[31:0]  Read_data_2;		// 从译码单元的Read_data_2中来
-    input[31:0]  Sign_extend;		// 从译码单元来的扩展后的立即数
-    input[5:0]   Function_opcode;  	// 取指单元来的r-类型指令功能码,r-form instructions[5:0]
-    input[5:0]   Exe_opcode;  		// 取指单元来的操作码
-    input[1:0]   ALUOp;             // 来自控制单元的运算指令控制编码
-    input[4:0]   Shamt;             // 来自取指单元的instruction[10:6]，指定移位次数
-    input  		 Sftmd;            // 来自控制单元的，表明是移位指令
-    input        ALUSrc;            // 来自控制单元，表明第二个操作数是立即数（beq，bne除外）
-    input        I_format;          // 来自控制单元，表明是除beq, bne, LW, SW之外的I-类型指令
-    input        Jr;               // 来自控制单元，表明是JR指令 //bullshit ?? what the fxxking use??
-    output       Zero;              // 为1表明计算值为0 
-    output[31:0] ALU_Result;        // 计算的数据结果
-    output[31:0] Addr_Result;		// 计算的地址结果        
-    input[31:0]  PC_plus_4;         // 来自取指单元的PC+4
+    input[31:0]  Read_data_1;		// from decoder Read_data_1
+    input[31:0]  Read_data_2;		// from decoder Read_data_2
+    input[31:0]  Sign_extend;		// from decoder, immediate after extension
+    input[5:0]   Function_opcode;  	// from Ifetch, r-form instructions[5:0]
+    input[5:0]   Exe_opcode;  		// Opcode from Ifetch
+    input[1:0]   ALUOp;             // from controller
+    input[4:0]   Shamt;             // from Ifetch, instruction[10:6]��determine the number of shift
+    input  		 Sftmd;            // from controller, indicate it is a shift instruction
+    input        ALUSrc;            // from controller��indicate the second operator is an immediate��except for beq��bne��
+    input        I_format;          // from controller��indicate it's an I-type instruction except for beq, bne, LW, SW
+    input        Jr;               // from controller, indicate it's a jr instruction //bullshit ?? what the fxxking use??
+    output       Zero;              // to Ifetch, 1 means ALU_Result is 0. 
+    output[31:0] ALU_Result;        // calculated data result
+    output[31:0] Addr_Result;		// calculated address result        
+    input[31:0]  PC_plus_4;         // PC+4 from Ifetch
   
    
     reg[31:0] ALU_Result;
@@ -69,18 +69,18 @@ module executs32(Read_data_1,Read_data_2,Sign_extend,Function_opcode,Exe_opcode,
     
     //Determine the output "ALU_Result"
     always @(*) begin
-    	//set type operation (slt, slti, sltu, sltiu)
-    	if( ((ALU_ctl==3'b111) && (Exe_code[3]==1)) || (ALU_ctl[2:1]==2'b11&& I_format==1'b1) )
+		//set type operation (slt, slti, sltu, sltiu)
+		if( ((ALU_ctl==3'b111) && (Exe_code[3]==1)) || (ALU_ctl[2:1]==2'b11&& I_format==1'b1) )
 			ALU_Result = ($signed(Ainput)-$signed(Binput)<0)?1:0;
-    	//lui operation
-    	else if((ALU_ctl==3'b101) && (I_format==1))
-    		ALU_Result[31:0]= {Binput[15:0],16'b0};/*set higher bits to Binput*/
-    	//shift operation
-    	else if(Sftmd==1)
-    		ALU_Result = Shift_Result ;
-    	//other types of operation in ALU (arithmatic or logic calculation)
-    	else
-    		ALU_Result = ALU_output_mux[31:0];
+		//lui operation
+		else if((ALU_ctl==3'b101) && (I_format==1))
+			ALU_Result[31:0]= {Binput[15:0],16'b0};/*set higher bits to Binput*/
+		//shift operation
+		else if(Sftmd==1)
+			ALU_Result = Shift_Result ;
+		//other types of operation in ALU (arithmatic or logic calculation)
+		else
+			ALU_Result = ALU_output_mux[31:0];
     end
     
     
@@ -112,7 +112,7 @@ module executs32(Read_data_1,Read_data_2,Sign_extend,Function_opcode,Exe_opcode,
             default:Shift_Result = Binput;
             endcase
         else
-        	Shift_Result = Binput;
+			Shift_Result = Binput;
     end
     
     

@@ -23,7 +23,7 @@
 module control32(
 input[5:0] Opcode, // instruction[31..26], opcode
 input[5:0] Function_opcode, // instructions[5..0], funct
-output Jr , // 1 indicates the instruction is "jr", otherwise it's not "jr" output Jmp; // 1 indicate the instruction is "j", otherwise it's not
+output Jr , // 1 indicates the instruction is "jr", otherwise it's not "jr" output Jmp;
 output RegDST,// 1 indicate destination register is "rd"(R),otherwise it's "rt"(I)
 output ALUSrc,// 1 indicate the 2nd data is immidiate (except "beq","bne")
 output MemtoReg, // 1 indicate read data from memory and write it into register
@@ -31,13 +31,13 @@ output RegWrite, // 1 indicate write register(R,I(lw)), otherwise it's not
 output MemWrite, // 1 indicate write data memory, otherwise it's not
 output Branch, // 1 indicate the instruction is "beq" , otherwise it's not
 output nBranch, // 1 indicate the instruction is "bne", otherwise it's not
-output Jmp,
+output Jmp,	 // 1 indicate the instruction is "j", otherwise it's not
 output Jal, // 1 indicate the instruction is "jal", otherwise it's not
 output I_format,
 /* 1 indicate the instruction is I-type but isn't "beq","bne","LW" or "SW" */
 output Sftmd, // 1 indicate the instruction is shift instruction
 output [1:0]  ALUOp
-/* if the instruction is R-type or I_format, ALUOpis2'b10;
+/* if the instruction is R-type or I_format, ALUOp is 2'b10;
 if the instruction is"beq" or "bne", ALUOpis 2'b01£»if the instruction is"lw" or "sw", ALUOpis 2'b00£»*/
     );
     wire R_format;
