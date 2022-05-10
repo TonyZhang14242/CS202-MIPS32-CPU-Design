@@ -21,19 +21,19 @@
 
 
 module decode32(
-		output [31:0] read_data_1,//output the 1st num
-        output [31:0] read_data_2,//output the 2nd num
+		output[31:0] read_data_1,//output the 1st num
+        output[31:0] read_data_2,//output the 2nd num
 		input[31:0]  Instruction,               // instruction from instrcution fetch
-		 input[31:0]  mem_data,                   // data from DATA RAM
-		 input[31:0]  ALU_result,                   // from ALU£¬to be extended to 32-bit
-		  input        Jal,   
-		  input RegWrite, //from control
-		    input        MemtoReg,             
-          input        RegDst,   
-		  output[31:0] Sign_extend,     // extended 32-bit immediate   
-			input clock,
-			input reset, 
-          input[31:0]  opcplus4      // from instruction fetch used by jal(pc+4)                     
+		input[31:0]  mem_data,                   // data from DATA RAM
+		input[31:0]  ALU_result,                   // from ALU£¬to be extended to 32-bit
+		input Jal,   
+		input RegWrite, //from control
+		input MemtoReg,             
+        input RegDst,   
+		output[31:0] Sign_extend,     // extended 32-bit immediate   
+		input clock,
+		input reset, 
+        input[31:0] opcplus4      // from instruction fetch used by jal(pc+4)                     
     );
     reg [31:0] register [31:0];//32 registers from $0 to $31 
     
@@ -63,17 +63,17 @@ module decode32(
     
     //switch the reg address want to write
     always@(*) begin
-     if(RegWrite == 1)begin
-         if( RegDst ==1'b1 || opcode==6'b000000  )begin//R-type
-                waddr = wreg_addr1;//rd
-          end
-          else if(opcode ==6'b000011 && Jal==1'b1)begin//jump and link
-                waddr = 31; //$ra 
-           end
-          else begin //i-type instruction
-                waddr = wreg_addr2; //rt
-           end
-       end
+		if(RegWrite == 1)begin
+			if( RegDst ==1'b1 || opcode==6'b000000 )begin//R-type
+				waddr = wreg_addr1;//rd
+			end
+			else if(opcode ==6'b000011 && Jal==1'b1)begin//jump and link
+				waddr = 31; //$ra 
+			end
+			else begin //i-type instruction
+				waddr = wreg_addr2; //rt
+			end
+		end
     end
     
     //switch what to write.
