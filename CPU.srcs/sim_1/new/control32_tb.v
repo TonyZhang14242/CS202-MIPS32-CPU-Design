@@ -27,7 +27,7 @@ module control32_tb(
     wire [1:0] ALUOp;
     wire Jr,RegDST,ALUSrc,MemtoReg,RegWrite,MemWrite,Branch,nBranch,Jmp,Jal,I_format,Sftmd;
     //instance the module "Control", bind the ports
-    Control c32
+    control32 c32
     (Opcode,Function_opcode, Jr,Jmp,Jal,Branch,nBranch,RegDST,MemtoReg ,RegWrite,MemWrite, ALUSrc,Sftmd,I_format,ALUOp);
     initial begin
     //an example: #0 add $3,$1,$2. get the machine code of 'add $3,$1,$2' // step1: edit the assembly code, add "add $3,$1,$2" // step2: open the assembly code in Minisys1Assembler2.2, do the assembly procession

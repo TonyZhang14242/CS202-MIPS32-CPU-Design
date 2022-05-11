@@ -39,7 +39,7 @@ module IFetc32_tb(
        wire[31:0] opcplus4;
         //module IFetc32(Instruction, branch_base_addr, link_addr,clock, reset,
        //Addr_result, Read_data_1, Branch, nBranch, Jmp, Jal, Jr, Zero);   
-       IFetc32 Uifetch(Instruction,PC_plus_4_out,opcplus4,clock,reset,
+       Ifetc32 Uifetch(Instruction,PC_plus_4_out,opcplus4,clock,reset,
        Add_result,Read_data_1,Branch,nBranch,Jmp,Jal,Jrn,Zero
       );
    

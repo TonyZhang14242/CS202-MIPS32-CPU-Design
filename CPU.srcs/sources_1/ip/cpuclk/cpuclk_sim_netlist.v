@@ -1,10 +1,10 @@
 // Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2017.4 (win64) Build 2086221 Fri Dec 15 20:55:39 MST 2017
-// Date        : Wed Apr 27 14:21:34 2022
+// Date        : Wed May 11 14:29:06 2022
 // Host        : LAPTOP-KSU6QTEM running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode funcsim
-//               d:/ComputerDesignLab/CPU/CPU.srcs/sources_1/ip/cpuclk/cpuclk_sim_netlist.v
+//               D:/ComputerDesignLab/CPU/CPU.srcs/sources_1/ip/cpuclk/cpuclk_sim_netlist.v
 // Design      : cpuclk
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -15,32 +15,39 @@
 (* NotValidForBitStream *)
 module cpuclk
    (clk_out1,
+    clk_out2,
     clk_in1);
   output clk_out1;
+  output clk_out2;
   input clk_in1;
 
   (* IBUF_LOW_PWR *) wire clk_in1;
   wire clk_out1;
+  wire clk_out2;
 
   cpuclk_cpuclk_clk_wiz inst
        (.clk_in1(clk_in1),
-        .clk_out1(clk_out1));
+        .clk_out1(clk_out1),
+        .clk_out2(clk_out2));
 endmodule
 
 (* ORIG_REF_NAME = "cpuclk_clk_wiz" *) 
 module cpuclk_cpuclk_clk_wiz
    (clk_out1,
+    clk_out2,
     clk_in1);
   output clk_out1;
+  output clk_out2;
   input clk_in1;
 
   wire clk_in1;
   wire clk_in1_cpuclk;
   wire clk_out1;
   wire clk_out1_cpuclk;
+  wire clk_out2;
+  wire clk_out2_cpuclk;
   wire clkfbout_buf_cpuclk;
   wire clkfbout_cpuclk;
-  wire NLW_plle2_adv_inst_CLKOUT1_UNCONNECTED;
   wire NLW_plle2_adv_inst_CLKOUT2_UNCONNECTED;
   wire NLW_plle2_adv_inst_CLKOUT3_UNCONNECTED;
   wire NLW_plle2_adv_inst_CLKOUT4_UNCONNECTED;
@@ -67,6 +74,10 @@ module cpuclk_cpuclk_clk_wiz
        (.I(clk_out1_cpuclk),
         .O(clk_out1));
   (* BOX_TYPE = "PRIMITIVE" *) 
+  BUFG clkout2_buf
+       (.I(clk_out2_cpuclk),
+        .O(clk_out2));
+  (* BOX_TYPE = "PRIMITIVE" *) 
   PLLE2_ADV #(
     .BANDWIDTH("OPTIMIZED"),
     .CLKFBOUT_MULT(46),
@@ -76,7 +87,7 @@ module cpuclk_cpuclk_clk_wiz
     .CLKOUT0_DIVIDE(40),
     .CLKOUT0_DUTY_CYCLE(0.500000),
     .CLKOUT0_PHASE(0.000000),
-    .CLKOUT1_DIVIDE(1),
+    .CLKOUT1_DIVIDE(92),
     .CLKOUT1_DUTY_CYCLE(0.500000),
     .CLKOUT1_PHASE(0.000000),
     .CLKOUT2_DIVIDE(1),
@@ -106,7 +117,7 @@ module cpuclk_cpuclk_clk_wiz
         .CLKIN2(1'b0),
         .CLKINSEL(1'b1),
         .CLKOUT0(clk_out1_cpuclk),
-        .CLKOUT1(NLW_plle2_adv_inst_CLKOUT1_UNCONNECTED),
+        .CLKOUT1(clk_out2_cpuclk),
         .CLKOUT2(NLW_plle2_adv_inst_CLKOUT2_UNCONNECTED),
         .CLKOUT3(NLW_plle2_adv_inst_CLKOUT3_UNCONNECTED),
         .CLKOUT4(NLW_plle2_adv_inst_CLKOUT4_UNCONNECTED),

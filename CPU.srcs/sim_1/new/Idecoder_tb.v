@@ -52,7 +52,7 @@ module Idecoder_tb(
                    output [31:0] rdata2//output the 2nd num
            );
        */
-       Idecoder32 Uid(clock,reset,RegWrite,Instruction,read_data,ALU_result, Jal,MemtoReg,RegDst,
+       decode32 Uid(clock,reset,RegWrite,Instruction,read_data,ALU_result, Jal,MemtoReg,RegDst,
       opcplus4, Sign_extend,read_data_1,read_data_2
       );
    
