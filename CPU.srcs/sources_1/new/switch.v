@@ -19,13 +19,13 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 module switch(
-    input switclk,		//  时钟信号	        
-    input switrst,		//  复位信号	        
-    input switchcs,		//从memorio来的switch片�?�信�?  	       
-    input[1:0] switchaddr,	//  到switch模块的地�?低端  	    
-    input switchread,		 //  读信�?	   
-    output reg [15:0] switchrdata,	    //  送到CPU的拨码开关�?�注意数据�?�线只有16�? 
-    input [23:0] switch_i		    //  从板上读�?24位开关数�? 
+    input switclk,		//  clock	        
+    input switrst,		//  reset	        
+    input switchcs,		//switch signal from memorio 	       
+    input[1:0] switchaddr,	//  lower 2bits of address from ALU  	    
+    input switchread,		 //  IORead from controller	   
+    output reg [15:0] switchrdata,	    //  data want go to memorio
+    input [23:0] switch_i		    //  data of 24 switches on board
 );
    
     always@(negedge switclk or posedge switrst) begin
