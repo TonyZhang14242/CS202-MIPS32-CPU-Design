@@ -23,9 +23,11 @@
 module cpu(
 input fpga_rst, //Active High
 input fpga_clk, 
-input[23:0] switch2N4, 
-output[23:0] led2N4
+input[23:0] sw, 
+output[23:0] led
     );
+    
+   
     wire clk;
 	
 	//
@@ -69,7 +71,24 @@ output[23:0] led2N4
 	
 	
     cpuclk clock(.clk_in1(fpga_clk),.clk_out1(clk));
-    Ifetc32 fetch();//todo
+    Ifetc32 fetch(.Addr_result(Executs32_Addr_Result),
+            .Branch(control32_Branch),
+            .Instruction(Ifetc32_Instruction),
+            .Jal(control32_Jal),
+            .Jmp(control32_Jmp),
+            .Jr(control32_Jr),
+            .Read_data_1(decode32_read_data_1),
+            .Zero(Executs32_Zero),
+            .branch_base_addr(Ifetc32_branch_base_addr),
+            .clock(clk),
+            .link_addr(Ifetc32_link_addr),
+            .nBranch(control32_nBranch),
+            .reset(fpga_rst),
+            .Funtion_code(Ifetc32_Funtion_code),
+            .Opcode(Ifetc32_Opcode),
+            .Shamt(Ifetc32_Shamt)
+            );//todo
+            
     control32 con(.ALUOp(control32_ALUOp),
         .ALUSrc(control32_ALUSrc),
         .Alu_resultHigh(Executs32_ALU_Result[31:10]),
@@ -90,7 +109,23 @@ output[23:0] led2N4
         .Sftmd(control32_Sftmd),
         .nBranch(control32_nBranch)
 		);
-	executs32 exe();/* to do*/
+	executs32 exe(
+	           .ALUOp(control32_ALUOp),
+            .ALUSrc(control32_ALUSrc),
+            .ALU_Result(Executs32_ALU_Result),
+            .Addr_Result(Executs32_Addr_Result),
+            .Function_opcode(Ifetc32_Funtion_code),
+            .I_format(control32_I_format),
+            .Sign_extend(decode32_imme_extend),
+            .Jr(control32_Jr),
+            .PC_plus_4(Ifetc32_branch_base_addr),
+            .Read_data_1(decode32_read_data_1),
+            .Read_data_2(decode32_read_data_2),
+            .Sftmd(control32_Sftmd),
+            .Shamt(Ifetc32_Shamt),
+            .Zero(Executs32_Zero),
+            .Exe_opcode(Ifetc32_Opcode)
+	);/* to do*/
 	dmemory32 mem(
 		.memWrite(control32_MemWrite),
         .address(MemOrIO_addr_out),
@@ -98,7 +133,21 @@ output[23:0] led2N4
         .readData(dmemory32_read_data),
         .writeData(MemOrIO_write_data)
 	);
-	decode32 dec();//to do
+	decode32 dec(
+	       .ALU_result(Executs32_ALU_Result),
+            .Instruction(Ifetc32_Instruction),
+            .Jal(control32_Jal),
+            .MemtoReg(control32_MemorIOtoReg),
+            .RegDst(control32_RegDST),
+            .RegWrite(control32_RegWrite),
+            .clock(clk),
+            .Sign_extend(decode32_imme_extend),
+            .opcplus4(Ifetc32_link_addr),
+            .mem_data(MemOrIO_r_wdata),
+            .read_data_1(decode32_read_data_1),
+            .read_data_2(decode32_read_data_2),
+            .reset(fpga_rst)
+	);//to do
 	MemOrIO mio(
 		.LEDCtrl(MemOrIO_LEDCtrl),
         .SwitchCtrl(MemOrIO_SwitchCtrl),
@@ -114,8 +163,8 @@ output[23:0] led2N4
         .r_wdata(MemOrIO_r_wdata),
         .write_data(MemOrIO_write_data)
 		);
-	switch sw(
-		.switch_i(switch2N4),
+	switch swi(
+		.switch_i(sw),
         .switchaddr(Executs32_ALU_Result[1:0]),
         .switchcs(MemOrIO_SwitchCtrl),
         .switchrdata(switchs_switchrdata),
@@ -127,10 +176,12 @@ output[23:0] led2N4
 		.led_clk(clk),
         .ledaddr(MemOrIO_addr_out[1:0]),
         .ledcs(MemOrIO_LEDCtrl),
-        .ledout(led2N4),
+        .ledout(led),
         .ledrst(fpga_rst),
-        .ledwdata(decode32_read_data_2),  
+        .ledwdata(decode32_read_data_2[15:0]),  
         .ledwrite(control32_IOWrite)
 	);
+	
+// test Part
 	
 endmodule

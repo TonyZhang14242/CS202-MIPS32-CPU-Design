@@ -62,7 +62,7 @@ if the instruction is"beq" or "bne", ALUOpis 2'b01£»if the instruction is"lw" or
 	assign  MemorIOtoReg = IORead || MemRead; // Read operations require reading data from memory or I/O to write to the register
  
     assign  RegDST=R_format;
-    assign  RegWrite = (R_format || MemtoReg || Jal || I_format) &&!(Jr);
+    assign  RegWrite = (R_format || MemorIOtoReg || Jal || I_format) &&!(Jr);
     assign  ALUSrc= (I_format||Opcode==6'b100011||Opcode==6'b101011);
     assign  ALUOp = {(R_format || I_format),(Branch || nBranch)};
 endmodule
