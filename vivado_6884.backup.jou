@@ -1,0 +1,17 @@
+#-----------------------------------------------------------
+# Vivado v2017.4 (64-bit)
+# SW Build 2086221 on Fri Dec 15 20:55:39 MST 2017
+# IP Build 2085800 on Fri Dec 15 22:25:07 MST 2017
+# Start of session at: Thu Apr 14 16:41:23 2022
+# Process ID: 6884
+# Current directory: D:/ComputerDesignLab/CPU
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent9380 D:\ComputerDesignLab\CPU\CPU.xpr
+# Log file: D:/ComputerDesignLab/CPU/vivado.log
+# Journal file: D:/ComputerDesignLab/CPU\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project D:/ComputerDesignLab/CPU/CPU.xpr
+update_compile_order -fileset sources_1
+launch_simulation
+source control32_tb.tcl
+close_sim
