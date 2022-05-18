@@ -70,8 +70,11 @@ module executs32(Read_data_1,Read_data_2,Sign_extend,Function_opcode,Exe_opcode,
     //Determine the output "ALU_Result"
     always @(*) begin
 		//set type operation (slt, slti, sltu, sltiu)
-		if( ((ALU_ctl==3'b111) && (Exe_code[3]==1)) || (ALU_ctl[2:1]==2'b11&& I_format==1'b1) )
-			ALU_Result = ($signed(Ainput)-$signed(Binput)<0)?1:0;
+		if( ((ALU_ctl==3'b111) && (Exe_code[3]==1)) || (ALU_ctl[2:1]==2'b11&& I_format==1'b1) ) begin
+			if(ALU_ctl==3'b111&&Exe_code[2:0]==3'b011)
+				ALU_Result = (Ainput-Binput<0)?1:0;
+			else ALU_Result = ($signed(Ainput)-$signed(Binput)<0)?1:0;
+		end
 		//lui operation
 		else if((ALU_ctl==3'b101) && (I_format==1))
 			ALU_Result[31:0]= {Binput[15:0],16'b0};/*set higher bits to Binput*/
