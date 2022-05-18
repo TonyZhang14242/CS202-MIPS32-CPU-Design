@@ -1,0 +1,2 @@
+Rom_Pro.v,verilog,xil_defaultlib,../../../../../../../ComputerDesignProject/CS202-MIPS32-CPU-Design/CPU.srcs/sources_1/Rom_Pro/sim/Rom_Pro.v,
+glbl.v,Verilog,xil_defaultlib,glbl.v

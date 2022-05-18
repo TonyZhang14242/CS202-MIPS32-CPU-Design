@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module dmemory32(clock,memWrite,address,writeData,readData );
+module dmemory32(clock,memWrite,address,writeData,readData);
 input clock; // Clock signal
 /* used to determine to write the memory unit or not,
 in the left screenshot its name is 'WE' */

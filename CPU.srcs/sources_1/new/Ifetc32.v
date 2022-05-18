@@ -32,16 +32,15 @@ module Ifetc32(
 	input Jr,// while Jr is 1, it means current instruction is jr
 	input Zero,// from ALU, while Zero is 1, it means the ALUresult is zero
 	input clock, reset, // Clock and reset
-	output[31:0] link_addr // (pc+4) to Decoder which is used by jal instruction
+	output reg [31:0] link_addr // (pc+4) to Decoder which is used by jal instruction
 );
 
 
 
 	reg[31:0] PC, Next_PC;
-	reg[31:0] link_addr;
 	wire [31:0] PC_plus4;
 
-	prgrom instmem(
+	Rom_Pro instmem(
        .clka(clock),         // input wire clka
        .addra(PC[15:2]),     // input wire [13 : 0] addra
        .douta(Instruction)         // output wire [31 : 0] douta

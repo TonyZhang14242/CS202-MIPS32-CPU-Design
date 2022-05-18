@@ -33,8 +33,10 @@ module decode32(
 		output[31:0] Sign_extend,     // extended 32-bit immediate   
 		input clock,
 		input reset, 
-        input[31:0] opcplus4      // from instruction fetch used by jal(pc+4)                     
+        input[31:0] opcplus4,      // from instruction fetch used by jal(pc+4)   	
+        output[31:0] test	
     );
+    assign test = register[1];
     reg [31:0] register [31:0];//32 registers from $0 to $31 
     
     reg [4:0] waddr; //address of register want to write
